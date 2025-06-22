@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Import tModLoader mod properties -->
+	<Import Project="..\tModLoader.targets" />
+
+	<!-- General -->
+	<PropertyGroup>
+		
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Assets\AngelicTrailMap.png" />
+	  <None Remove="Assets\Black.png" />
+	  <None Remove="Assets\circle.png" />
+	  <None Remove="Assets\CircleGradient.png" />
+	  <None Remove="Assets\Cosmic.png" />
+	  <None Remove="Assets\Empty.png" />
+	  <None Remove="Assets\FireTrail.png" />
+	  <None Remove="Assets\Glow.png" />
+	  <None Remove="Assets\GlowBeams.png" />
+	  <None Remove="Assets\GlowOrb.png" />
+	  <None Remove="Assets\GlowSoft.png" />
+	  <None Remove="Assets\GlowTrail.png" />
+	  <None Remove="Assets\LightningTrail.png" />
+	  <None Remove="Assets\Line.png" />
+	  <None Remove="Assets\NightmareBackgroundClose.png" />
+	  <None Remove="Assets\NightmareBackgroundFar.png" />
+	  <None Remove="Assets\NightmareBackgroundMid.png" />
+	  <None Remove="Assets\PitGlow.png" />
+	  <None Remove="Assets\Pixel.png" />
+	  <None Remove="Assets\PlaceholderTile.png" />
+	  <None Remove="Assets\ShadowTrail.png" />
+	  <None Remove="Assets\SinglePixel.png" />
+	  <None Remove="Assets\textBackground.png" />
+	  <None Remove="Assets\Vignette.png" />
+	  <None Remove="Content\Dusts\Bolt.png" />
+	  <None Remove="Content\Dusts\GlowDust.png" />
+	  <None Remove="Content\Dusts\Grass.png" />
+	  <None Remove="Content\Dusts\LabBrickDust.png" />
+	  <None Remove="Content\Dusts\LabDust.png" />
+	  <None Remove="Content\Dusts\Spark.png" />
+	  <None Remove="Content\Items\Misc\GoArrow.png" />
+	  <None Remove="Content\Items\Misc\LoreQuestion.png" />
+	  <None Remove="Content\NPCs\Cinematic\Uriel.png" />
+	  <None Remove="Content\NPCs\ElevatorDoorNPC.png" />
+	  <None Remove="Content\NPCs\Friendly\TimePortalNPC.png" />
+	  <None Remove="Content\NPCs\LabElevator.png" />
+	  <None Remove="Content\NPCs\LabElevator_Glow.png" />
+	  <None Remove="Effects\CeirosRing.fx" />
+	  <None Remove="Effects\DatsuzeiTrail.fx" />
+	  <None Remove="Effects\GlowingDust.fx" />
+	  <None Remove="Effects\TrailShader.fx" />
+	</ItemGroup>
+
+	<!-- References -->
+	<ItemGroup>
+	  <Folder Include="Content\NPCs\Friendly\" />
+	  <Folder Include="Content\NPCs\Hostile\" />
+	  <Folder Include="Content\Projectiles\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="CollisionLib">
+	    <HintPath>..\Narrator\Lib\CollisionLib.dll</HintPath>
+	  </Reference>
+	  <Reference Include="StructureHelper">
+	    <HintPath>..\Narrator\Lib\StructureHelper.dll</HintPath>
+	  </Reference>
+	  <Reference Include="SubworldLibrary">
+	    <HintPath>..\Narrator\Lib\SubworldLibrary.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+</Project>

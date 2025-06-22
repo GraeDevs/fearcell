@@ -1,0 +1,4 @@
+displayName = Fearcell
+author = Grae
+version = 0.1
+modReferences = SubworldLibrary, CollisionLib, StructureHelper

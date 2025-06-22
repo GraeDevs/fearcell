@@ -1,0 +1,66 @@
+Biomes: {
+	UrielBiome: {
+		DisplayName: Uriel Biome
+		TownNPCDialogueName: the Uriel Biome
+	}
+}
+
+NPCs: {
+	Uriel.DisplayName: Uriel
+	Messenger.DisplayName: Messenger
+	ElevatorDoorNPC.DisplayName: Elevator Door N P C
+	LabElevator.DisplayName: Lab Elevator
+	LabPA.DisplayName: Lab P A
+	TimePortalNPC.DisplayName: Time Portal N P C
+}
+
+Projectiles.FadeToBlack.DisplayName: Fade To Black
+
+Configs: {
+	FearcellConfig: {
+		DisplayName: Fearcell Config
+
+		ForegroundParticles: {
+			Label: Foreground Particles
+			Tooltip: ""
+		}
+	}
+}
+
+Tiles: {
+	TransparentTileTest.MapEntry: Transparent Tile Test
+	WarningSignTile1.MapEntry: Warning Sign Tile1
+	WarningSignTile.MapEntry: Warning Sign Tile
+	DaveSpawnerTile.MapEntry: Dave Spawner Tile
+	TimeMachineTile.MapEntry: Time Machine Tile
+	ServerTile.MapEntry: Server Tile
+	ReactorTile.MapEntry: Reactor Tile
+	LabDoor.MapEntry: Lab Door
+	LabSpeakerTile.MapEntry: Lab Speaker Tile
+	LabZone_1.MapEntry: Lab Zone_1
+	MonitoringDeskTile.MapEntry: Monitoring Desk Tile
+	OfficeRoomDoor.MapEntry: Office Room Door
+	ReactorLabBlastDoor.MapEntry: Reactor Lab Blast Door
+}
+
+Items: {
+	BlackItem: {
+		DisplayName: Black Item
+		Tooltip: ""
+	}
+
+	GoArrow: {
+		DisplayName: Go Arrow
+		Tooltip: ""
+	}
+
+	LoreQuestion: {
+		DisplayName: Lore Question
+		Tooltip: ""
+	}
+
+	LabSpeakerItem: {
+		DisplayName: Lab Speaker Item
+		Tooltip: ""
+	}
+}
