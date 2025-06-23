@@ -41,6 +41,12 @@ Tiles: {
 	MonitoringDeskTile.MapEntry: Monitoring Desk Tile
 	OfficeRoomDoor.MapEntry: Office Room Door
 	ReactorLabBlastDoor.MapEntry: Reactor Lab Blast Door
+	LabDeskTile.MapEntry: Lab Desk Tile
+	SmallLabLampTile.MapEntry: Small Lab Lamp Tile
+	LabLampTile2.MapEntry: Lab Lamp Tile2
+	LabLampTile.MapEntry: Lab Lamp Tile
+	BrokenLabLamp.MapEntry: Broken Lab Lamp
+	VendingMachineTile.MapEntry: Vending Machine Tile
 }
 
 Items: {
@@ -61,6 +67,111 @@ Items: {
 
 	LabSpeakerItem: {
 		DisplayName: Lab Speaker Item
+		Tooltip: ""
+	}
+
+	LabReactor: {
+		DisplayName: Lab Reactor
+		Tooltip: ""
+	}
+
+	LabDesk: {
+		DisplayName: Lab Desk
+		Tooltip: ""
+	}
+
+	BrokenLampPlacer: {
+		DisplayName: Broken Lamp Placer
+		Tooltip: ""
+	}
+
+	DaveSpawner: {
+		DisplayName: Dave Spawner
+		Tooltip: ""
+	}
+
+	ElavatorDoorPlacer: {
+		DisplayName: Elavator Door Placer
+		Tooltip: ""
+	}
+
+	ElavatorPlacer: {
+		DisplayName: Elavator Placer
+		Tooltip: ""
+	}
+
+	LabBlastDoorItem: {
+		DisplayName: Lab Blast Door Item
+		Tooltip: ""
+	}
+
+	LabBrick: {
+		DisplayName: Lab Brick
+		Tooltip: ""
+	}
+
+	LabDoorPlacer: {
+		DisplayName: Lab Door Placer
+		Tooltip: ""
+	}
+
+	LabFloor: {
+		DisplayName: Lab Floor
+		Tooltip: ""
+	}
+
+	LabPipe: {
+		DisplayName: Lab Pipe
+		Tooltip: ""
+	}
+
+	LampPlacer: {
+		DisplayName: Lamp Placer
+		Tooltip: ""
+	}
+
+	LampPlacer2: {
+		DisplayName: Lamp Placer2
+		Tooltip: ""
+	}
+
+	OfficeDoor: {
+		DisplayName: Office Door
+		Tooltip: ""
+	}
+
+	PosterPlacer: {
+		DisplayName: Poster Placer
+		Tooltip: ""
+	}
+
+	PosterPlacer1: {
+		DisplayName: Poster Placer1
+		Tooltip: ""
+	}
+
+	ServerPlacer: {
+		DisplayName: Server Placer
+		Tooltip: ""
+	}
+
+	SmallLampPlacer: {
+		DisplayName: Small Lamp Placer
+		Tooltip: ""
+	}
+
+	TimeMachine: {
+		DisplayName: Time Machine
+		Tooltip: ""
+	}
+
+	Zone1Placer: {
+		DisplayName: Zone1 Placer
+		Tooltip: ""
+	}
+
+	VendingMachine: {
+		DisplayName: Vending Machine
 		Tooltip: ""
 	}
 }

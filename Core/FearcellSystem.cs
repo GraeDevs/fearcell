@@ -160,6 +160,35 @@ namespace fearcell.Core
 
     public static class FearcellUtilities
     {
+        public static string WrapString(string input, int length, DynamicSpriteFont font, float scale)
+        {
+            string output = "";
+            string[] words = input.Split();
+
+            string line = "";
+            foreach (string str in words)
+            {
+                if (str == "NEWBLOCK")
+                {
+                    output += "\n\n";
+                    line = "";
+                    continue;
+                }
+
+                if (font.MeasureString(line).X * scale < length)
+                {
+                    output += " " + str;
+                    line += " " + str;
+                }
+                else
+                {
+                    output += "\n" + str;
+                    line = str;
+                }
+            }
+
+            return output[1..];
+        }
         public static void Bolt(Vector2 point1, Vector2 point2, int dusttype, float scale = 1, int armLength = 30, Color color = default, float frequency = 0.05f)
         {
             int nodeCount = (int)Vector2.Distance(point1, point2) / armLength;
