@@ -1,7 +1,9 @@
+using fearcell.Content.Items.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace fearcell.Core.UI
 {
@@ -9,27 +11,34 @@ namespace fearcell.Core.UI
     {
         private Dictionary<string, ICommand> commands;
 
+        /*
+         * Implement saving of this variable
+         */
+        public bool hasAdminAccess;
+
         public CommandProcessor()
         {
+            hasAdminAccess = false;
             InitializeCommands();
         }
 
-        // Initialize all available commands
         private void InitializeCommands()
         {
             commands = new Dictionary<string, ICommand>(StringComparer.OrdinalIgnoreCase)
             {
-                { "help", new HelpCommand() },
+                { "help", new HelpCommand(this) },
                 { "clear", new ClearCommand() },
                 { "time", new TimeCommand() },
                 { "player", new PlayerCommand() },
                 { "world", new WorldCommand() },
                 { "echo", new EchoCommand() },
-                { "version", new VersionCommand() }
+                { "version", new VersionCommand() },
+                { "adminaccess", new AdminAccessCommand(this) },
+
+                { "spawn", new SpawnItemCommand(this) }
             };
         }
 
-        // Process command and return result
         public List<string> ProcessCommand(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
@@ -41,6 +50,15 @@ namespace fearcell.Core.UI
 
             if (commands.ContainsKey(commandName))
             {
+                if (IsAdminCommand(commandName) && !hasAdminAccess)
+                {
+                    return new List<string>
+                    {
+                        $"'{commandName}' requires admin access.",
+                        "Use 'adminAccess' command to unlock admin features."
+                    };
+                }
+
                 return commands[commandName].Execute(args);
             }
             else
@@ -53,13 +71,18 @@ namespace fearcell.Core.UI
             }
         }
 
-        // Add new command (for extensibility)
+        private bool IsAdminCommand(string commandName)
+        {
+            string[] adminCommands = {"spawn" };
+            return adminCommands.Contains(commandName.ToLower());
+        }
+
+
         public void AddCommand(string name, ICommand command)
         {
             commands[name.ToLower()] = command;
         }
 
-        // Get all command names
         public List<string> GetCommandNames()
         {
             return commands.Keys.ToList();
@@ -77,6 +100,13 @@ namespace fearcell.Core.UI
     // Help command
     public class HelpCommand : ICommand
     {
+        private CommandProcessor processor;
+
+        public HelpCommand(CommandProcessor commandProcessor)
+        {
+            processor = commandProcessor;
+        }
+
         public List<string> Execute(string[] args)
         {
             var result = new List<string>
@@ -91,9 +121,21 @@ namespace fearcell.Core.UI
                 "world       - Show world information",
                 "echo <text> - Echo back the provided text",
                 "version     - Show terminal version",
-                "",
-                "Usage: <command> [arguments]"
+                "adminAccess - Unlock administrative commands (requires admin key)",
+                ""
             };
+
+            if (processor.hasAdminAccess)
+            {
+                result.Add(" :");
+                result.Add("Admin Commands:");
+                result.Add("==============");
+                result.Add("");
+                result.Add("spawn <itemID> [amount] - Spawn items");
+                result.Add("");
+            }
+
+            result.Add("Usage: <command> [arguments]");
             return result;
         }
 
@@ -106,7 +148,6 @@ namespace fearcell.Core.UI
     {
         public List<string> Execute(string[] args)
         {
-            // This will be handled specially by the UI
             return new List<string> { "CLEAR_SCREEN" };
         }
 
@@ -196,16 +237,11 @@ namespace fearcell.Core.UI
     {
         public List<string> Execute(string[] args)
         {
-            if (args.Length == 0)
-            {
-                return new List<string> { "Usage: echo <text>" };
-            }
-
             return new List<string> { string.Join(" ", args) };
         }
 
         public string GetDescription() => "Echo back the provided text";
-        public string GetUsage() => "echo <text>";
+        public string GetUsage() => "echo";
     }
 
     // Version command
@@ -225,4 +261,102 @@ namespace fearcell.Core.UI
         public string GetDescription() => "Show terminal version";
         public string GetUsage() => "version";
     }
+
+    public class AdminAccessCommand : ICommand
+    {
+        private CommandProcessor processor;
+
+        public AdminAccessCommand(CommandProcessor commandProcessor)
+        {
+            processor = commandProcessor;
+        }
+
+        public List<string> Execute(string[] args)
+        {
+            if (processor.hasAdminAccess)
+            {
+                return new List<string> { "Admin access already granted." };
+            }
+
+            Player player = Main.LocalPlayer;
+
+            int itemSlot = -1;
+            for (int i = 0; i < player.inventory.Length; i++)
+            {
+                Item item = player.inventory[i];
+                if (item != null && item.type == ModContent.ItemType<BlackItem>() && !item.IsAir)
+                {
+                    itemSlot = i;
+                    break;
+                }
+            }
+
+            if (itemSlot == -1)
+            {
+                return new List<string>
+                {
+                    "Access denied: Admin key not found in inventory.",
+                    "Required item: Admin Access Key"
+                };
+            }
+
+            string itemName = player.inventory[itemSlot].Name;
+            player.inventory[itemSlot].TurnToAir();
+
+            processor.hasAdminAccess = true;
+
+            return new List<string>
+            {
+                "Admin access granted!",
+                "",
+                "New commands unlocked:",
+                "- spawn <itemID> [amount]",
+                "",
+                "Type 'help' to see all available commands."
+            };
+        }
+
+        public string GetDescription() => "Unlock admin commands";
+        public string GetUsage() => "adminAccess";
+    }
+
+    public class SpawnItemCommand : ICommand
+    {
+        private CommandProcessor processor;
+
+        public SpawnItemCommand(CommandProcessor commandProcessor)
+        {
+            processor = commandProcessor;
+        }
+
+        public List<string> Execute(string[] args)
+        {
+            if (args.Length == 0)
+            {
+                return new List<string> { "Usage: spawn <itemID> [amount]" };
+            }
+
+            if (!int.TryParse(args[0], out int itemID))
+            {
+                return new List<string> { "Invalid item ID." };
+            }
+
+            int amount = args.Length > 1 && int.TryParse(args[1], out int a) ? a : 1;
+
+            Player player = Main.LocalPlayer;
+            int itemIndex = Item.NewItem(player.GetSource_GiftOrReward(), player.getRect(), itemID, amount);
+
+            if (Main.item[itemIndex] != null)
+            {
+                string itemName = Main.item[itemIndex].Name;
+                return new List<string> { $"Spawned {amount}x {itemName}" };
+            }
+
+            return new List<string> { "Failed to spawn item." };
+        }
+
+        public string GetDescription() => "Spawn items";
+        public string GetUsage() => "spawn <itemID> [amount]";
+    }
+
 }
