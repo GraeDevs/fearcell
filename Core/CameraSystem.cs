@@ -17,25 +17,6 @@ namespace fearcell.Core
         {
             Player player = Main.LocalPlayer;
 
-            if (!Main.gameMenu)
-            {
-                ShakeTimer++;
-                if (ShakeAmount >= 0 && ShakeTimer >= 5)
-                {
-                    ShakeAmount -= 0.2f;
-                }
-                if (ShakeAmount < 0)
-                {
-                    ShakeAmount = 0;
-                }
-                Main.screenPosition += new Vector2(ShakeAmount * Main.rand.NextFloat(), ShakeAmount * Main.rand.NextFloat());
-            }
-            else
-            {
-                ShakeAmount = 0;
-                ShakeTimer = 0;
-            }
-
             if (!isChangingCameraPos && !isChangingZoom)
             {
                 zoomBefore = Main.GameZoomTarget;

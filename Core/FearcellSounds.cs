@@ -41,5 +41,8 @@ namespace fearcell.Core
         public static readonly SoundStyle KeyboardSound = new("fearcell/Sounds/Custom/ComputerStartup") { Volume = .5f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
         public static readonly SoundStyle VendingMachine = new("fearcell/Sounds/Custom/VendingMachine") { Volume = .8f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
         public static readonly SoundStyle Error = new("fearcell/Sounds/Custom/Error") { Volume = .8f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
+
+        public static readonly SoundStyle ComputerStartup = new("fearcell/Sounds/Custom/ComputerStart") { Volume = .8f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
+        public static readonly SoundStyle ComputerExit = new("fearcell/Sounds/Custom/ComputerExitSFX") { Volume = .8f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
     }
 }

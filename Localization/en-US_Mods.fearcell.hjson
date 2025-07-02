@@ -174,4 +174,11 @@ Items: {
 		DisplayName: Vending Machine
 		Tooltip: ""
 	}
+
+	LabWall: {
+		DisplayName: Lab Wall
+		Tooltip: ""
+	}
 }
+
+"Keybinds.Open Text Input.DisplayName": Open  Text  Input

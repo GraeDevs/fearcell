@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.ModLoader;
 using fearcell.Content.NPCs.Cinematic;
 using System;
+using fearcell.Core.UI;
 
 
 /*

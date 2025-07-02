@@ -7,11 +7,12 @@ using Terraria.ObjectData;
 using Terraria.Localization;
 using Microsoft.Xna.Framework.Graphics;
 using static Terraria.ModLoader.ModContent;
-using fearcell.Core.UI;
 using fearcell.Content.Items.Misc;
 using Terraria.Audio;
 using fearcell.Content.Dusts;
 using fearcell.Core;
+using Terraria.ID;
+using fearcell.Core.UI;
 
 namespace fearcell.Content.Tiles.Lab
 {
@@ -51,10 +52,8 @@ namespace fearcell.Content.Tiles.Lab
             Player player = Main.LocalPlayer;
             SoundEngine.PlaySound(FearcellSounds.KeyboardSound, player.Center);
 
-            UILoader.GetUIState<ComputerUI>().Display("04-20-0223", "From: Cyborg", "Update Log 5: Useless info. Useless info. Useless info." +
-                " Useless info. Useless info. Useless info. Useless info. Useless info. Useless info. Useless info. Useless info." +
-                "  Useless info. Useless info.");
-            return false;
+            ModContent.GetInstance<CommandPromptSystem>().ShowUI();
+            return true;
         }
 
         public override void MouseOver(int i, int j)

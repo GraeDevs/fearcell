@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.ModLoader;
 using SubworldLibrary;
+using Microsoft.Xna.Framework.Input;
 
 namespace fearcell
 {
@@ -17,6 +18,5 @@ namespace fearcell
         {
             Instance = this;
         }
-
     }
 }
