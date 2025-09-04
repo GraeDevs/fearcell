@@ -9,11 +9,12 @@ using static Terraria.ID.ContentSamples.CreativeHelper;
 
 namespace fearcell.Content.Tiles.Lab
 {
-    public class LabBeamTile : ModTile
+    public class LabBeamTile_Solid : ModTile
     {
+
         public override void SetStaticDefaults()
         {
-            Main.tileSolid[Type] = false;
+            Main.tileSolid[Type] = true;
             Main.tileBlockLight[Type] = true;
             Main.tileLighted[Type] = false;
             HitSound = SoundID.Tink;

@@ -165,8 +165,8 @@ namespace fearcell.Content.NPCs
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D glow = ModContent.Request<Texture2D>("source/Content/NPCs/Delta/LabElevator_Glow").Value;
-            Texture2D tex = ModContent.Request<Texture2D>("source/Content/NPCs/Delta/LabElevator").Value;
+            Texture2D glow = ModContent.Request<Texture2D>("fearcell/Content/NPCs/LabElevator_Glow").Value;
+            Texture2D tex = ModContent.Request<Texture2D>("fearcell/Content/NPCs/LabElevator").Value;
             Vector2 drawOrigin = new(tex.Width / 2, tex.Height / 2);
 
             Main.EntitySpriteDraw(tex, NPC.Center - new Vector2(0, NPC.velocity.Y * 2) - screenPos, null, NPC.GetAlpha(drawColor), NPC.rotation, drawOrigin, NPC.scale, SpriteEffects.None, 0);

@@ -17,6 +17,8 @@
 	  <None Remove="Assets\FireTrail.png" />
 	  <None Remove="Assets\Glow.png" />
 	  <None Remove="Assets\GlowBeams.png" />
+	  <None Remove="Assets\GlowBeams2.png" />
+	  <None Remove="Assets\GlowBeams3.png" />
 	  <None Remove="Assets\GlowOrb.png" />
 	  <None Remove="Assets\GlowSoft.png" />
 	  <None Remove="Assets\GlowTrail.png" />
@@ -33,6 +35,7 @@
 	  <None Remove="Assets\textBackground.png" />
 	  <None Remove="Assets\Vignette.png" />
 	  <None Remove="Content\Dusts\Bolt.png" />
+	  <None Remove="Content\Dusts\BoltTex.png" />
 	  <None Remove="Content\Dusts\GlowDust.png" />
 	  <None Remove="Content\Dusts\Grass.png" />
 	  <None Remove="Content\Dusts\LabBrickDust.png" />
@@ -40,9 +43,15 @@
 	  <None Remove="Content\Dusts\Spark.png" />
 	  <None Remove="Content\Items\Misc\GoArrow.png" />
 	  <None Remove="Content\Items\Misc\LoreQuestion.png" />
+	  <None Remove="Content\Items\Tiles\Lab\Walls\LabSheetWallItem.png" />
+	  <None Remove="Content\Items\Tiles\Lab\Walls\LabYellowStripWallItem.png" />
+	  <None Remove="Content\Items\Weapons\Angel\CinderedBlade.png" />
+	  <None Remove="Content\Items\Weapons\Angel\UrielsBow.png" />
+	  <None Remove="Content\Items\Weapons\Angel\UrielsBowProj.png" />
 	  <None Remove="Content\NPCs\Cinematic\Uriel.png" />
 	  <None Remove="Content\NPCs\ElevatorDoorNPC.png" />
 	  <None Remove="Content\NPCs\Friendly\TimePortalNPC.png" />
+	  <None Remove="Content\NPCs\Hostile\Lab\Dave.png" />
 	  <None Remove="Content\NPCs\LabElevator.png" />
 	  <None Remove="Content\NPCs\LabElevator_Glow.png" />
 	  <None Remove="Effects\CeirosRing.fx" />
@@ -53,9 +62,8 @@
 
 	<!-- References -->
 	<ItemGroup>
-	  <Folder Include="Content\NPCs\Friendly\" />
-	  <Folder Include="Content\NPCs\Hostile\" />
 	  <Folder Include="Content\Projectiles\" />
+	  <Folder Include="Content\Structures\Lab\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Reference Include="CollisionLib">

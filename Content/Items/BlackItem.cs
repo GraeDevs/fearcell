@@ -14,7 +14,7 @@ namespace fearcell.Content.Items.Tiles
 {
     public class BlackItem : ModItem
     {
-        public override string Texture => "source/Content/Assets/Black";
+        public override string Texture => "fearcell/Assets/Black";
         public override void SetDefaults()
         {
             Item.width = 28;

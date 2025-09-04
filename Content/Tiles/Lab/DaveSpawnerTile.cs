@@ -8,6 +8,9 @@ using Terraria;
 using Microsoft.Xna.Framework;
 using Terraria.Enums;
 using fearcell.Content.Dusts;
+using fearcell.Core;
+using fearcell.Content.NPCs.Hostile.Lab;
+using Terraria.ID;
 
 namespace fearcell.Content.Tiles.Lab
 {
@@ -47,21 +50,33 @@ namespace fearcell.Content.Tiles.Lab
                // frame = 2;
            // }
         }
-/*
-        public override void NearbyEffects(int i, int j, bool closer)
+
+        public override void RandomUpdate(int i, int j)
         {
-            Vector2 pos = new Vector2(2 + i * 16, 2 + j * 16);
-            string ding = "Ding";
-            if (!SourceWorldFlags.labSecurity)
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+
+            int spawnX = i * 16 + 8;
+            int spawnY = j * 16 + 8;
+
+            if (!Collision.SolidTiles(i - 1, i + 1, j - 1, j + 1))
             {
-                timer++;
-                if (timer >= 1800)
+                int npcIndex = NPC.NewNPC(Entity.GetSource_NaturalSpawn(), spawnX, spawnY, ModContent.NPCType<Dave>());
+
+                if (Main.netMode != NetmodeID.Server)
                 {
-                    timer = 0;
-                    SoundEngine.PlaySound(SourceSounds.DaveSpawner, pos);
-                    NPC.NewNPC(new EntitySource_WorldEvent(), (int)pos.X + 3, (int)pos.Y + 28, NPCType<Dave>());
+                    for (int k = 0; k < 15; k++)
+                    {
+                        Dust.NewDust(new Vector2(spawnX - 8, spawnY - 8), 6, 6, ModContent.DustType<Spark>());
+                    }
+                }
+
+                // Sync for multiplayer
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npcIndex);
                 }
             }
-        }*/
+        }
     }
 }

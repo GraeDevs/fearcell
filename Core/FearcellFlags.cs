@@ -1,4 +1,5 @@
-﻿using System;
+﻿using fearcell.Core.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace fearcell.Core
         /// </summary>
         public static bool firstNightmare = false;
         public static bool secondNightmare = false;
+        public static bool labSecurity = false;
 
         /// <summary>
         /// Cutscene Variables
@@ -40,7 +42,7 @@ namespace fearcell.Core
             if (secondNightmare)
                 tag["secondNightmare"] = true;
             if (shawnIntro)
-                tag["shawnIntro"] = true;
+                tag["shawnIntro"] = true;  
         }
 
         public override void LoadWorldData(TagCompound tag)

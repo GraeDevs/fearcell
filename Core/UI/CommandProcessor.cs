@@ -11,9 +11,6 @@ namespace fearcell.Core.UI
     {
         private Dictionary<string, ICommand> commands;
 
-        /*
-         * Implement saving of this variable
-         */
         public bool hasAdminAccess;
 
         public CommandProcessor()
@@ -351,7 +348,7 @@ namespace fearcell.Core.UI
                 string itemName = Main.item[itemIndex].Name;
                 return new List<string> { $"Spawned {amount}x {itemName}" };
             }
-
+            
             return new List<string> { "Failed to spawn item." };
         }
 

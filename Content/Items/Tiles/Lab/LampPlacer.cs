@@ -94,7 +94,7 @@ namespace fearcell.Content.Items.Tiles.Lab
     public class BrokenLampPlacer : ModItem
     {
 
-        public override string Texture => "source/Content/Items/Tiles/Delta/BrokenLabLamp";
+        public override string Texture => "fearcell/Content/Items/Tiles/Lab/BrokenLabLamp";
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 1;

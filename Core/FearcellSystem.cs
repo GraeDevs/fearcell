@@ -50,6 +50,9 @@ namespace fearcell.Core
         public static float CurrentIntensity => ShakeTimer > 0f ? ShakeIntensity * (ShakeTimer / ShakeDuration) : 0f;
         public static float RemainingTime => ShakeTimer;
 
+        public static float rottime;
+        public static int Timer;
+
         public override void PostUpdateEverything()
         {
            if(!Main.gameMenu)
@@ -140,6 +143,10 @@ namespace fearcell.Core
                     Liquid.skipCount = 0;
                 }
             }
+
+            Timer++;
+            rottime += (float)Math.PI / 60;
+            if (rottime >= Math.PI * 2) rottime = 0;
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -264,7 +271,10 @@ namespace fearcell.Core
             tile.MinPick = minPick;
         }
 
-
+        public static Vector3 ToVector3(this Vector2 vector)
+        {
+            return new Vector3(vector.X, vector.Y, 0);
+        }
         public static float RotationDifference(float rotTo, float rotFrom)
         {
             return ((rotTo - rotFrom) % 6.28f + 9.42f) % 6.28f - 3.14f;

@@ -6,42 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace fearcell.Core
 {
-    public class PrimitiveDrawing : HookGroup
-    {
-        // Should not interfere with anything.
-        public override void Load()
-        {
-            if (Main.dedServ)
-                return;
-
-            On_Main.DrawDust += DrawPrimitives;
-        }
-
-        private void DrawPrimitives(On_Main.orig_DrawDust orig, Main self)
-        {
-            orig(self);
-
-            if (Main.gameMenu)
-                return;
-
-            Main.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-
-            for (int k = 0; k < Main.maxProjectiles; k++) // Projectiles.
-            {
-                if (Main.projectile[k].active && Main.projectile[k].ModProjectile is IDrawPrimitive)
-                    (Main.projectile[k].ModProjectile as IDrawPrimitive).DrawPrimitives();
-            }
-
-            for (int k = 0; k < Main.maxNPCs; k++) // NPCs.
-            {
-                if (Main.npc[k].active && Main.npc[k].ModNPC is IDrawPrimitive)
-                    (Main.npc[k].ModNPC as IDrawPrimitive).DrawPrimitives();
-            }
-        }
-    }
     public class Primitives : IDisposable
     {
         private DynamicVertexBuffer vertexBuffer;
@@ -59,8 +27,8 @@ namespace fearcell.Core
             {
                 Main.QueueMainThreadAction(() =>
                 {
-                    vertexBuffer = new DynamicVertexBuffer(device, typeof(VertexPositionColorTexture), maxVertices, BufferUsage.None);
-                    indexBuffer = new DynamicIndexBuffer(device, IndexElementSize.SixteenBits, maxIndices, BufferUsage.None);
+                    vertexBuffer = new DynamicVertexBuffer(device, typeof(VertexPositionColorTexture), maxVertices, BufferUsage.WriteOnly);
+                    indexBuffer = new DynamicIndexBuffer(device, IndexElementSize.SixteenBits, maxIndices, BufferUsage.WriteOnly);
                 });
             }
         }
@@ -114,6 +82,8 @@ namespace fearcell.Core
 
     public class Trail : IDisposable
     {
+        public int stayAlive = 10;
+
         private readonly Primitives primitives;
 
         private readonly int maxPointCount;
@@ -123,6 +93,8 @@ namespace fearcell.Core
         private readonly TrailWidthFunction trailWidthFunction;
 
         private readonly TrailColorFunction trailColorFunction;
+
+        public bool IsDisposed { get; private set; }
 
         /// <summary>
         /// Array of positions that define the trail. NOTE: Positions[Positions.Length - 1] is assumed to be the start (e.g. Projectile.Center) and Positions[0] is assumed to be the end.
@@ -175,6 +147,8 @@ namespace fearcell.Core
              */
 
             primitives = new Primitives(device, maxPointCount * 2 + this.tip.ExtraVertices, 6 * (maxPointCount - 1) + this.tip.ExtraIndices);
+
+            ModContent.GetInstance<TrailManager>().managed.Add(this);
         }
 
         private void GenerateMesh(out VertexPositionColorTexture[] vertices, out short[] indices, out int nextAvailableIndex)
@@ -233,8 +207,8 @@ namespace fearcell.Core
                  * These indices are given by k for the above point and k + n for the below point.
                  */
 
-                verticesTemp[k] = new VertexPositionColorTexture(a.Vec3(), colorA, texCoordA);
-                verticesTemp[k + maxPointCount] = new VertexPositionColorTexture(c.Vec3(), colorC, texCoordC);
+                verticesTemp[k] = new VertexPositionColorTexture(a.ToVector3(), colorA, texCoordA);
+                verticesTemp[k + maxPointCount] = new VertexPositionColorTexture(c.ToVector3(), colorC, texCoordC);
             }
 
             /* Now, we have to loop through the indices to generate triangles.
@@ -278,23 +252,36 @@ namespace fearcell.Core
 
             tip.GenerateMesh(Positions[^1], toNext, nextAvailableIndex, out VertexPositionColorTexture[] tipVertices, out short[] tipIndices, trailWidthFunction, trailColorFunction);
 
-            primitives.SetVertices(mainVertices.FastUnion(tipVertices));
-            primitives.SetIndices(mainIndices.FastUnion(tipIndices));
+            primitives.SetVertices(FastUnion(mainVertices, tipVertices));
+            primitives.SetIndices(FastUnion(mainIndices, tipIndices));
+        }
+
+        private T[] FastUnion<T>(T[] front, T[] back)
+        {
+            var combined = new T[front.Length + back.Length];
+
+            Array.Copy(front, combined, front.Length);
+            Array.Copy(back, 0, combined, front.Length, back.Length);
+
+            return combined;
         }
 
         public void Render(Effect effect)
         {
-            if (Positions == null && !(primitives?.IsDisposed ?? true))
+            if (Positions == null || (primitives?.IsDisposed ?? true) || IsDisposed)
                 return;
 
             SetupMeshes();
 
             primitives.Render(effect);
+
+            stayAlive = 10; //Set stayalive to 10 frames as we render again, we will dispose this trail if it fails to render for 10 frames
         }
 
         public void Dispose()
         {
             primitives?.Dispose();
+            IsDisposed = true;
         }
     }
 
@@ -353,9 +340,9 @@ namespace fearcell.Core
 
             vertices = new VertexPositionColorTexture[]
             {
-                new(a.Vec3(), colorA, texCoordA),
-                new(b.Vec3(), colorB, texCoordB),
-                new(c.Vec3(), colorC, texCoordC)
+                new(a.ToVector3(), colorA, texCoordA),
+                new(b.ToVector3(), colorB, texCoordB),
+                new(c.ToVector3(), colorC, texCoordC)
             };
 
             indices = new short[]
@@ -407,7 +394,7 @@ namespace fearcell.Core
 
             var fanCenterTexCoord = new Vector2(1, 0.5f);
 
-            vertices[0] = new VertexPositionColorTexture(trailTipPosition.Vec3(), (trailColorFunction?.Invoke(fanCenterTexCoord) ?? Color.White) * 0.75f, fanCenterTexCoord);
+            vertices[0] = new VertexPositionColorTexture(trailTipPosition.ToVector3(), (trailColorFunction?.Invoke(fanCenterTexCoord) ?? Color.White) * 0.75f, fanCenterTexCoord);
 
             var indicesTemp = new List<short>();
 
@@ -427,7 +414,7 @@ namespace fearcell.Core
                 // The transparency must be changed a bit so it looks right when overlapped
                 Color circlePointColor = (trailColorFunction?.Invoke(new Vector2(1, 0)) ?? Color.White) * rotationFactor * 0.85f;
 
-                vertices[k + 1] = new VertexPositionColorTexture(circlePoint.Vec3(), circlePointColor, circleTexCoord);
+                vertices[k + 1] = new VertexPositionColorTexture(circlePoint.ToVector3(), circlePointColor, circleTexCoord);
 
                 //if (k == triCount)//leftover and not needed
                 //{
@@ -467,7 +454,7 @@ namespace fearcell.Core
                 // The transparency must be changed a bit so it looks right when overlapped
                 Color circlePointColor = (trailColorFunction?.Invoke(new Vector2(1, 0)) ?? Color.White) * rotationFactor * 0.75f;
 
-                vertices[k + 1] = new VertexPositionColorTexture(circlePoint.Vec3(), circlePointColor, circleTexCoord);
+                vertices[k + 1] = new VertexPositionColorTexture(circlePoint.ToVector3(), circlePointColor, circleTexCoord);
 
                 // Skip last point, since there is no point to pair with it.
                 if (k == triCount * 2 + 1)
@@ -490,6 +477,24 @@ namespace fearcell.Core
             }
 
             indices = indicesTemp.ToArray();
+        }
+    }
+
+    public class TrailManager : ModSystem
+    {
+        public List<Trail> managed = new();
+
+        public override void PostUpdateEverything()
+        {
+            foreach (Trail trail in managed)
+            {
+                trail.stayAlive--;
+
+                if (trail.stayAlive <= 0)
+                    trail.Dispose();
+            }
+
+            managed.RemoveAll(n => n.IsDisposed);
         }
     }
 }

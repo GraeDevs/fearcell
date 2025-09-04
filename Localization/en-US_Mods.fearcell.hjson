@@ -12,9 +12,17 @@ NPCs: {
 	LabElevator.DisplayName: Lab Elevator
 	LabPA.DisplayName: Lab P A
 	TimePortalNPC.DisplayName: Time Portal N P C
+	Dave.DisplayName: Dave
+	Crate.DisplayName: Crate
+	Fly.DisplayName: Fly
 }
 
-Projectiles.FadeToBlack.DisplayName: Fade To Black
+Projectiles: {
+	FadeToBlack.DisplayName: Fade To Black
+	UrielsBowProj.DisplayName: Uriels Bow Proj
+	CinderedBladeProj.DisplayName: Cindered Blade Proj
+	ExplosionThing.DisplayName: Explosion Thing
+}
 
 Configs: {
 	FearcellConfig: {
@@ -178,6 +186,41 @@ Items: {
 	LabWall: {
 		DisplayName: Lab Wall
 		Tooltip: ""
+	}
+
+	UrielsBow: {
+		DisplayName: Uriels Bow
+		Tooltip: ""
+	}
+
+	LabPlatingWallItem: {
+		DisplayName: Lab Plating Wall Item
+		Tooltip: ""
+	}
+
+	LabSheetWallItem: {
+		DisplayName: Lab Sheet Wall Item
+		Tooltip: ""
+	}
+
+	LabYellowStripWallItem: {
+		DisplayName: Lab Yellow Strip Wall Item
+		Tooltip: ""
+	}
+
+	CinderedBlade: {
+		DisplayName: Cindered Blade
+		Tooltip: ""
+	}
+
+	SteelBeam: {
+		Tooltip: ""
+		DisplayName: Steel Beam
+	}
+
+	SolidSteelBeam: {
+		Tooltip: ""
+		DisplayName: Solid Steel Beam
 	}
 }
 

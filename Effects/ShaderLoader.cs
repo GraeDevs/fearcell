@@ -13,11 +13,15 @@ using ReLogic.Content;
 using static Terraria.ModLoader.Core.TmodFile;
 using Mono.Cecil;
 using fearcell.Core;
+using System.Collections.Generic;
+using System;
 
 namespace fearcell.Effects
 {
     class ShaderLoader : IOrderedLoadable
     {
+        private static readonly Dictionary<string, Lazy<Asset<Effect>>> shaders = new();
+
         public float Priority => 0.9f;
 
         public void Load()
@@ -28,7 +32,7 @@ namespace fearcell.Effects
             MethodInfo info = typeof(Mod).GetProperty("File", BindingFlags.NonPublic | BindingFlags.Instance).GetGetMethod(true);
             var file = (TmodFile)info.Invoke(fearcell.Instance, null);
 
-            System.Collections.Generic.IEnumerable<FileEntry> shaders = file.Where(n => n.Name.StartsWith("Effects/") && n.Name.EndsWith(".xnb"));
+            IEnumerable<FileEntry> shaders = file.Where(n => n.Name.StartsWith("Effects/") && n.Name.EndsWith(".xnb"));
 
             foreach (FileEntry entry in shaders)
             {
@@ -43,11 +47,23 @@ namespace fearcell.Effects
 
         }
 
+        public static Asset<Effect> GetShader(string key)
+        {
+            if (shaders.ContainsKey(key))
+            {
+                return shaders[key].Value;
+            }
+            else
+            {
+                LoadShader(key, $"Effects/{key}");
+                return shaders[key].Value;
+            }
+        }
+
         public static void LoadShader(string name, string path)
         {
-            var screenRef = new Ref<Effect>(fearcell.Instance.Assets.Request<Effect>(path, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value);
-            Filters.Scene[name] = new Filter(new ScreenShaderData(screenRef, name + "Pass"), EffectPriority.High);
-            Filters.Scene[name].Load();
+            if (!shaders.ContainsKey(name))
+                shaders.Add(name, new(() => fearcell.Instance.Assets.Request<Effect>(path)));
         }
     }
 }

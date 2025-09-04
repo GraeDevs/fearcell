@@ -29,6 +29,16 @@ namespace fearcell.Core
             }
         }
 
+        public static readonly SoundStyle DaveDeath = new("fearcell/Sounds/Custom/DaveDeath") { Volume = .35f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
+
+        public static readonly SoundStyle DaveHurt = new("fearcell/Sounds/Custom/DaveHurt") { Volume = .35f, PitchVariance = 1f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
+
+        public static readonly SoundStyle DaveSpawner = new("fearcell/Sounds/Custom/DaveSpawner") { Volume = .25f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
+
+        public static readonly SoundStyle Blastdoor = new("fearcell/Sounds/Custom/Blastdoor") { Volume = .35f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
+
+        public static readonly SoundStyle Static = new("fearcell/Sounds/Custom/Static") { Volume = .05f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
+
         public static readonly SoundStyle UrielLine1 = new("fearcell/Sounds/Custom/UrielLine1") { Volume = 1.2f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
         public static readonly SoundStyle UrielLine2 = new("fearcell/Sounds/Custom/UrielLine2") { Volume = 1.2f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
 
