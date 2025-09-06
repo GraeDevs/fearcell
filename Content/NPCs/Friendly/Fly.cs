@@ -61,11 +61,9 @@ namespace fearcell.Content.NPCs.Friendly
             }
             else
             {
-                // Random movement when no light source
                 RandomMovement();
             }
 
-            // Update rotation to face movement direction
             UpdateRotation();
 
         }
@@ -78,7 +76,7 @@ namespace fearcell.Content.NPCs.Friendly
             bool foundLight = false;
 
             // Check for torches and other light-emitting tiles
-            int searchRadius = (int)(maxDistance / 16f); // Convert to tile units
+            int searchRadius = (int)(maxDistance / 16f);
             int npcTileX = (int)(npcCenter.X / 16f);
             int npcTileY = (int)(npcCenter.Y / 16f);
 
@@ -149,7 +147,7 @@ namespace fearcell.Content.NPCs.Friendly
         private void GenerateErraticMovement()
         {
             // Create jittery, erratic movement pattern
-            if (timer % 5 == 0) // Change direction frequently
+            if (timer % 5 == 0)
             {
                 offset = new Vector2(
                     Main.rand.NextFloat(-1f, 1f) * 3f,
@@ -157,7 +155,6 @@ namespace fearcell.Content.NPCs.Friendly
                 );
             }
 
-            // Add some sine wave motion for more organic feel
             float sineOffset = (float)Math.Sin(timer * 0.2f) * 0.5f;
             offset.Y += sineOffset;
         }
@@ -170,16 +167,13 @@ namespace fearcell.Content.NPCs.Friendly
             // If too close to light source, buzz around it erratically
             if (distance < interestRange)
             {
-                // Create highly erratic orbit behavior
-                float baseOrbitSpeed = 0.05f + Main.rand.NextFloat(-0.02f, 0.03f); // Variable orbit speed
+                float baseOrbitSpeed = 0.05f + Main.rand.NextFloat(-0.02f, 0.03f);
                 float orbitAngle = timer * baseOrbitSpeed;
 
-                // Add random orbit radius changes
                 float baseRadius = interestRange * (0.3f + Main.rand.NextFloat(-0.2f, 0.4f));
                 float radiusVariation = (float)Math.Sin(timer * 0.15f) * (interestRange * 0.2f);
                 float currentRadius = Math.Max(20f, baseRadius + radiusVariation);
 
-                // Random orbit shape distortion
                 float xDistortion = 0.5f + Main.rand.NextFloat(-0.3f, 0.5f);
                 float yDistortion = 0.3f + Main.rand.NextFloat(-0.2f, 0.4f);
 
@@ -189,7 +183,7 @@ namespace fearcell.Content.NPCs.Friendly
                 );
 
                 // Add sudden direction changes and jitters
-                if (Main.rand.NextBool(30)) // 1/30 chance each frame for sudden movement
+                if (Main.rand.NextBool(30)) 
                 {
                     orbitOffset += new Vector2(
                         Main.rand.NextFloat(-30f, 30f),
@@ -198,7 +192,7 @@ namespace fearcell.Content.NPCs.Friendly
                 }
 
                 // Add spiral behavior occasionally
-                if (Main.rand.NextBool(80)) // Occasional spiral in/out
+                if (Main.rand.NextBool(80)) 
                 {
                     float spiralFactor = (float)Math.Sin(timer * 0.3f) * 40f;
                     orbitOffset *= (1f + spiralFactor / currentRadius);
@@ -210,8 +204,6 @@ namespace fearcell.Content.NPCs.Friendly
                 if (moveDirection.Length() > 0)
                 {
                     moveDirection.Normalize();
-
-                    // Variable movement speed for more erratic behavior
                     float moveSpeed = 1.5f + Main.rand.NextFloat(-0.5f, 1.5f);
                     float acceleration = 0.08f + Main.rand.NextFloat(-0.03f, 0.07f);
 
@@ -236,13 +228,11 @@ namespace fearcell.Content.NPCs.Friendly
                 {
                     direction.Normalize();
 
-                    // Add some zigzag approach behavior
                     float zigzagOffset = (float)Math.Sin(timer * 0.1f) * 2f;
                     Vector2 perpendicular = new Vector2(-direction.Y, direction.X) * zigzagOffset;
 
                     Vector2 targetVelocity = (direction * 3f) + perpendicular + offset;
 
-                    // Randomly slow down or speed up approach
                     if (Main.rand.NextBool(60))
                     {
                         targetVelocity *= Main.rand.NextFloat(0.3f, 1.8f);
@@ -252,7 +242,6 @@ namespace fearcell.Content.NPCs.Friendly
                 }
             }
 
-            // Lose target if too far away
             if (distance > maxDistance * 1.5f)
             {
                 hasTarget = false;
@@ -276,7 +265,7 @@ namespace fearcell.Content.NPCs.Friendly
             {
                 // Continuous gradual movement changes
                 NPC.velocity += offset * 0.05f;
-                NPC.velocity *= 0.98f; // Slight drag to prevent infinite acceleration
+                NPC.velocity *= 0.98f; 
 
                 // Ensure minimum movement
                 if (NPC.velocity.Length() < 0.5f)
@@ -302,10 +291,8 @@ namespace fearcell.Content.NPCs.Friendly
 
         public override void OnSpawn(IEntitySource source)
         {
-            // Start with random erratic values
             timer = Main.rand.NextFloat(0f, 100f);
 
-            // Give initial random velocity to prevent straight-up movement
             Vector2 initialDirection = new Vector2(
                 Main.rand.NextFloat(-1f, 1f),
                 Main.rand.NextFloat(-1f, 1f)
