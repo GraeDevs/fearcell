@@ -16,15 +16,10 @@ namespace fearcell.Content.NPCs.Friendly
         private float timer = 0f;
         private Vector2 offset = Vector2.Zero;
         private int lightSearchCooldown = 0;
-        private const int searchFrequency = 30; // Search for light every 30 ticks
-        private const float maxDistance = 200f; // Max distance to detect light
-        private const float interestRange = 30f; // How close to stay to light source
-
-        public override void SetStaticDefaults()
-        {
-            Main.npcFrameCount[Type] = 1; // Animation frames
-            NPCID.Sets.CountsAsCritter[Type] = true; // Acts like a critter
-        }
+        private const int searchFrequency = 30;
+        private const float maxDistance = 200f;
+        private const float interestRange = 30f;
+        private bool debounce = false;
 
         public override void SetDefaults()
         {
@@ -51,6 +46,12 @@ namespace fearcell.Content.NPCs.Friendly
             {
                 SearchForLightSources();
                 lightSearchCooldown = searchFrequency;
+            }
+
+            if(!debounce && hasTarget)
+            {
+                debounce = true;
+                CombatText.NewText(NPC.getRect(), Color.White, "Buzz Buzz!");
             }
 
             GenerateErraticMovement();
@@ -138,9 +139,8 @@ namespace fearcell.Content.NPCs.Friendly
                    tileType == TileID.Hellforge ||
                    tileType == TileID.LunarOre ||
                    tileType == TileID.Crystals ||
-                   tileType == ModContent.TileType<LabLampTile>() ||
-                   tileType == ModContent.TileType<LabLampTile2>() ||
-                   tileType == ModContent.TileType<SmallLabLampTile>() ||
+                   tileType == ModContent.TileType<HangingLabLampTile>() ||
+                   tileType == ModContent.TileType<LabWallLampTile>() ||
                    Main.tileShine[tileType] > 0;
         }
 
@@ -250,35 +250,58 @@ namespace fearcell.Content.NPCs.Friendly
 
         private void RandomMovement()
         {
-            // Active wandering movement when no light source
-            if (timer % 120 == 0) // Change direction every 2 seconds
+            // Simple erratic wandering when no light source - no timer dependencies
+
+            // Frequent direction changes
+            if (Main.rand.NextBool(40)) // 1/40 chance each frame for direction change
             {
-                Vector2 randomDirection = new Vector2(
+                Vector2 newDirection = new Vector2(
                     Main.rand.NextFloat(-1f, 1f),
                     Main.rand.NextFloat(-1f, 1f)
                 );
-                randomDirection.Normalize();
-
-                NPC.velocity = Vector2.Lerp(NPC.velocity, randomDirection * 2f + offset, 0.1f);
+                newDirection.Normalize();
+                NPC.velocity = newDirection * Main.rand.NextFloat(1.2f, 2.5f);
             }
-            else
-            {
-                // Continuous gradual movement changes
-                NPC.velocity += offset * 0.05f;
-                NPC.velocity *= 0.98f; 
 
-                // Ensure minimum movement
-                if (NPC.velocity.Length() < 0.5f)
-                {
-                    Vector2 nudge = new Vector2(
-                        Main.rand.NextFloat(-0.8f, 0.8f),
-                        Main.rand.NextFloat(-0.8f, 0.8f)
-                    );
-                    NPC.velocity += nudge;
-                }
+            // Constant small jitters
+            if (Main.rand.NextBool(5)) // 1/5 chance each frame for jitter
+            {
+                Vector2 jitter = new Vector2(
+                    Main.rand.NextFloat(-0.8f, 0.8f),
+                    Main.rand.NextFloat(-0.8f, 0.8f)
+                );
+                NPC.velocity += jitter;
+            }
+
+            // Sudden direction changes
+            if (Main.rand.NextBool(80)) // 1/80 chance for sudden change
+            {
+                Vector2 suddenChange = new Vector2(
+                    Main.rand.NextFloat(-1f, 1f),
+                    Main.rand.NextFloat(-1f, 1f)
+                );
+                suddenChange.Normalize();
+                NPC.velocity = suddenChange * Main.rand.NextFloat(1.5f, 3f);
+            }
+
+            // Keep speed reasonable
+            if (NPC.velocity.Length() > 3.5f)
+            {
+                NPC.velocity.Normalize();
+                NPC.velocity *= 3.5f;
+            }
+
+            // Prevent getting stuck
+            if (NPC.velocity.Length() < 0.8f)
+            {
+                Vector2 boost = new Vector2(
+                    Main.rand.NextFloat(-1f, 1f),
+                    Main.rand.NextFloat(-1f, 1f)
+                );
+                boost.Normalize();
+                NPC.velocity = boost * 1.5f;
             }
         }
-
 
         private void UpdateRotation()
         {

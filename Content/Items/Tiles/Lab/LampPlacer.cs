@@ -10,10 +10,10 @@ using Terraria.ModLoader;
 
 namespace fearcell.Content.Items.Tiles.Lab
 {
-    public class LampPlacer : ModItem
-    {
+  
 
-        public override string Texture => "fearcell/Content/Items/Tiles/Lab/ShadedLabLamp";
+    public class HangingLabLamp : ModItem
+    {
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 1;
@@ -32,15 +32,13 @@ namespace fearcell.Content.Items.Tiles.Lab
             Item.rare = ModContent.RarityType<DeltaRarity>();
             Item.consumable = true;
             Item.value = 2000;
-            Item.createTile = ModContent.TileType<LabLampTile>();
+            Item.createTile = ModContent.TileType<HangingLabLampTile>();
         }
-
     }
 
-    public class LampPlacer2 : ModItem
+    public class LabWallLamp : ModItem
     {
 
-        public override string Texture => "fearcell/Content/Items/Tiles/Lab/LabLamp";
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 1;
@@ -59,62 +57,7 @@ namespace fearcell.Content.Items.Tiles.Lab
             Item.rare = ModContent.RarityType<DeltaRarity>();
             Item.consumable = true;
             Item.value = 2000;
-            Item.createTile = ModContent.TileType<LabLampTile2>();
+            Item.createTile = ModContent.TileType<LabWallLampTile>();
         }
-
-    }
-
-    public class SmallLampPlacer : ModItem
-    {
-
-        public override string Texture => "fearcell/Content/Items/Tiles/Lab/SmallLabLamp";
-        public override void SetStaticDefaults()
-        {
-            Item.ResearchUnlockCount = 1;
-        }
-
-        public override void SetDefaults()
-        {
-            Item.width = 28;
-            Item.height = 20;
-            Item.maxStack = 999;
-            Item.useTurn = true;
-            Item.autoReuse = true;
-            Item.useAnimation = 15;
-            Item.useTime = 10;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.rare = ModContent.RarityType<DeltaRarity>();
-            Item.consumable = true;
-            Item.value = 2000;
-            Item.createTile = ModContent.TileType<SmallLabLampTile>();
-        }
-
-    }
-
-    public class BrokenLampPlacer : ModItem
-    {
-
-        public override string Texture => "fearcell/Content/Items/Tiles/Lab/BrokenLabLamp";
-        public override void SetStaticDefaults()
-        {
-            Item.ResearchUnlockCount = 1;
-        }
-
-        public override void SetDefaults()
-        {
-            Item.width = 28;
-            Item.height = 20;
-            Item.maxStack = 999;
-            Item.useTurn = true;
-            Item.autoReuse = true;
-            Item.useAnimation = 15;
-            Item.useTime = 10;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.rare = ModContent.RarityType<DeltaRarity>();
-            Item.consumable = true;
-            Item.value = 2000;
-            Item.createTile = ModContent.TileType<BrokenLabLamp>();
-        }
-
     }
 }

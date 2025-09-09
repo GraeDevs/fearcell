@@ -55,6 +55,8 @@ Tiles: {
 	LabLampTile.MapEntry: Lab Lamp Tile
 	BrokenLabLamp.MapEntry: Broken Lab Lamp
 	VendingMachineTile.MapEntry: Vending Machine Tile
+	HangingLabLampTile.MapEntry: Hanging Lab Lamp Tile
+	LabWallLampTile.MapEntry: Lab Wall Lamp Tile
 }
 
 Items: {
@@ -163,7 +165,7 @@ Items: {
 		Tooltip: ""
 	}
 
-	SmallLampPlacer: {
+	HangingLabLamp: {
 		DisplayName: Small Lamp Placer
 		Tooltip: ""
 	}
@@ -221,6 +223,16 @@ Items: {
 	SolidSteelBeam: {
 		Tooltip: ""
 		DisplayName: Solid Steel Beam
+	}
+
+	LabWallLamp: {
+		DisplayName: Lab Wall Lamp
+		Tooltip: ""
+	}
+
+	BloodSplatter: {
+		DisplayName: Blood Splatter
+		Tooltip: ""
 	}
 }
 

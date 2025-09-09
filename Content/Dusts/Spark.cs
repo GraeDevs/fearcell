@@ -31,7 +31,7 @@ namespace fearcell.Content.Dusts
         {
             if (dust.customData is null)
             {
-                dust.position -= Vector2.One * 32 * dust.scale;
+                dust.position -= Vector2.One * 15 * dust.scale;
                 dust.customData = true;
             }
 
@@ -43,7 +43,7 @@ namespace fearcell.Content.Dusts
 
             Vector2 currentCenter = dust.position + Vector2.One.RotatedBy(dust.rotation) * 32 * dust.scale;
 
-            dust.scale *= 0.95f;
+            dust.scale *= 0.65f;
             Vector2 nextCenter = dust.position + Vector2.One.RotatedBy(dust.rotation + 0.06f) * 32 * dust.scale;
 
             dust.rotation += 0.06f;
